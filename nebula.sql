@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Creato il: Ott 19, 2021 alle 22:14
+-- Creato il: Nov 08, 2021 alle 09:01
 -- Versione del server: 10.3.27-MariaDB-0+deb10u1
 -- Versione PHP: 7.3.19-1~deb10u1
 
@@ -65,7 +65,12 @@ CREATE TABLE `groups` (
   `type_no_username` int(1) NOT NULL DEFAULT 1,
   `log_channel` varchar(50) NOT NULL DEFAULT '-1001359708474',
   `group_photo` varchar(255) NOT NULL DEFAULT 'https://naos.hersel.it/group_photo/default.jpg',
-  `total_users` int(50) NOT NULL DEFAULT 0
+  `total_users` int(50) NOT NULL DEFAULT 0,
+  `zip_filter` tinyint(1) NOT NULL DEFAULT 0,
+  `targz_filter` tinyint(1) NOT NULL DEFAULT 0,
+  `jpg_filter` tinyint(1) NOT NULL DEFAULT 0,
+  `docx_filter` tinyint(1) NOT NULL DEFAULT 0,
+  `apk_filter` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
