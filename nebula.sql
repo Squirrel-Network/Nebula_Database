@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Creato il: Nov 08, 2021 alle 09:01
+-- Creato il: Dic 09, 2021 alle 09:20
 -- Versione del server: 10.3.27-MariaDB-0+deb10u1
 -- Versione PHP: 7.3.19-1~deb10u1
 
@@ -70,7 +70,9 @@ CREATE TABLE `groups` (
   `targz_filter` tinyint(1) NOT NULL DEFAULT 0,
   `jpg_filter` tinyint(1) NOT NULL DEFAULT 0,
   `docx_filter` tinyint(1) NOT NULL DEFAULT 0,
-  `apk_filter` tinyint(1) NOT NULL DEFAULT 0
+  `apk_filter` tinyint(1) NOT NULL DEFAULT 0,
+  `zoophile_filter` tinyint(1) NOT NULL DEFAULT 1,
+  `sender_chat_block` tinyint(1) NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -119,7 +121,20 @@ CREATE TABLE `nebula_updates` (
   `id` int(11) NOT NULL,
   `update_id` varchar(255) NOT NULL,
   `tg_group_id` varchar(255) NOT NULL,
+  `tg_user_id` varchar(255) NOT NULL,
   `date` datetime(6) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Struttura della tabella `owners`
+--
+
+CREATE TABLE `owners` (
+  `id` int(11) NOT NULL,
+  `tg_id` varchar(50) NOT NULL,
+  `tg_username` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -221,6 +236,13 @@ ALTER TABLE `nebula_updates`
   ADD UNIQUE KEY `update_index` (`update_id`);
 
 --
+-- Indici per le tabelle `owners`
+--
+ALTER TABLE `owners`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `tg_id` (`tg_id`);
+
+--
 -- Indici per le tabelle `owner_list`
 --
 ALTER TABLE `owner_list`
@@ -286,6 +308,12 @@ ALTER TABLE `group_users`
 -- AUTO_INCREMENT per la tabella `nebula_updates`
 --
 ALTER TABLE `nebula_updates`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT per la tabella `owners`
+--
+ALTER TABLE `owners`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
