@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Creato il: Dic 09, 2021 alle 09:20
+-- Creato il: Dic 09, 2021 alle 09:25
 -- Versione del server: 10.3.27-MariaDB-0+deb10u1
 -- Versione PHP: 7.3.19-1~deb10u1
 
@@ -128,18 +128,6 @@ CREATE TABLE `nebula_updates` (
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `owners`
---
-
-CREATE TABLE `owners` (
-  `id` int(11) NOT NULL,
-  `tg_id` varchar(50) NOT NULL,
-  `tg_username` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
-
---
 -- Struttura della tabella `owner_list`
 --
 
@@ -236,13 +224,6 @@ ALTER TABLE `nebula_updates`
   ADD UNIQUE KEY `update_index` (`update_id`);
 
 --
--- Indici per le tabelle `owners`
---
-ALTER TABLE `owners`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `tg_id` (`tg_id`);
-
---
 -- Indici per le tabelle `owner_list`
 --
 ALTER TABLE `owner_list`
@@ -308,12 +289,6 @@ ALTER TABLE `group_users`
 -- AUTO_INCREMENT per la tabella `nebula_updates`
 --
 ALTER TABLE `nebula_updates`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT per la tabella `owners`
---
-ALTER TABLE `owners`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
