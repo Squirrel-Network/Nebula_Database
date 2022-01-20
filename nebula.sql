@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Creato il: Dic 09, 2021 alle 09:25
+-- Creato il: Gen 20, 2022 alle 20:27
 -- Versione del server: 10.3.27-MariaDB-0+deb10u1
 -- Versione PHP: 7.3.19-1~deb10u1
 
@@ -72,7 +72,8 @@ CREATE TABLE `groups` (
   `docx_filter` tinyint(1) NOT NULL DEFAULT 0,
   `apk_filter` tinyint(1) NOT NULL DEFAULT 0,
   `zoophile_filter` tinyint(1) NOT NULL DEFAULT 1,
-  `sender_chat_block` tinyint(1) NOT NULL DEFAULT 1
+  `sender_chat_block` tinyint(1) NOT NULL DEFAULT 1,
+  `spoiler_block` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -168,6 +169,18 @@ CREATE TABLE `users` (
 -- --------------------------------------------------------
 
 --
+-- Struttura della tabella `whitelist_channel`
+--
+
+CREATE TABLE `whitelist_channel` (
+  `id` int(11) NOT NULL,
+  `tg_channel_id` varchar(255) NOT NULL,
+  `tg_group_id` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
 -- Struttura della tabella `whitelist_table`
 --
 
@@ -245,6 +258,13 @@ ALTER TABLE `users`
   ADD UNIQUE KEY `tg_id_key` (`tg_id`);
 
 --
+-- Indici per le tabelle `whitelist_channel`
+--
+ALTER TABLE `whitelist_channel`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `index_c_c` (`tg_channel_id`,`tg_group_id`);
+
+--
 -- Indici per le tabelle `whitelist_table`
 --
 ALTER TABLE `whitelist_table`
@@ -307,6 +327,12 @@ ALTER TABLE `superban_table`
 -- AUTO_INCREMENT per la tabella `users`
 --
 ALTER TABLE `users`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT per la tabella `whitelist_channel`
+--
+ALTER TABLE `whitelist_channel`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
