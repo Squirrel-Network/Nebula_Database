@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Creato il: Gen 20, 2022 alle 20:27
+-- Creato il: Mar 08, 2022 alle 20:39
 -- Versione del server: 10.3.27-MariaDB-0+deb10u1
 -- Versione PHP: 7.3.19-1~deb10u1
 
@@ -73,7 +73,8 @@ CREATE TABLE `groups` (
   `apk_filter` tinyint(1) NOT NULL DEFAULT 0,
   `zoophile_filter` tinyint(1) NOT NULL DEFAULT 1,
   `sender_chat_block` tinyint(1) NOT NULL DEFAULT 1,
-  `spoiler_block` tinyint(1) NOT NULL DEFAULT 0
+  `spoiler_block` tinyint(1) NOT NULL DEFAULT 0,
+  `set_no_vocal` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -110,6 +111,47 @@ CREATE TABLE `group_users` (
   `tg_id` varchar(50) DEFAULT NULL,
   `tg_group_id` varchar(50) DEFAULT NULL,
   `warn_count` int(11) NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Struttura della tabella `nebula_dashboard`
+--
+
+CREATE TABLE `nebula_dashboard` (
+  `id` int(11) NOT NULL,
+  `tg_id` varchar(255) NOT NULL,
+  `tg_username` varchar(255) NOT NULL,
+  `tg_group_id` varchar(255) NOT NULL,
+  `enable` tinyint(1) NOT NULL DEFAULT 1,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `updated_at` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Struttura della tabella `nebula_flood`
+--
+
+CREATE TABLE `nebula_flood` (
+  `id` int(11) NOT NULL,
+  `tg_user_id` bigint(50) NOT NULL,
+  `tg_group_id` bigint(50) NOT NULL,
+  `time_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Struttura della tabella `nebula_type_no_username_cat`
+--
+
+CREATE TABLE `nebula_type_no_username_cat` (
+  `id` int(11) NOT NULL,
+  `type_no_username_id` int(11) NOT NULL,
+  `type_no_username_desc` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -230,6 +272,26 @@ ALTER TABLE `group_users`
   ADD UNIQUE KEY `key_user_group` (`tg_id`,`tg_group_id`);
 
 --
+-- Indici per le tabelle `nebula_dashboard`
+--
+ALTER TABLE `nebula_dashboard`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `tg_group_id_index` (`tg_group_id`);
+
+--
+-- Indici per le tabelle `nebula_flood`
+--
+ALTER TABLE `nebula_flood`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indici per le tabelle `nebula_type_no_username_cat`
+--
+ALTER TABLE `nebula_type_no_username_cat`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `index_tnu` (`type_no_username_id`);
+
+--
 -- Indici per le tabelle `nebula_updates`
 --
 ALTER TABLE `nebula_updates`
@@ -303,6 +365,24 @@ ALTER TABLE `groups_blacklist`
 -- AUTO_INCREMENT per la tabella `group_users`
 --
 ALTER TABLE `group_users`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT per la tabella `nebula_dashboard`
+--
+ALTER TABLE `nebula_dashboard`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT per la tabella `nebula_flood`
+--
+ALTER TABLE `nebula_flood`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT per la tabella `nebula_type_no_username_cat`
+--
+ALTER TABLE `nebula_type_no_username_cat`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
