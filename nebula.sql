@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.3
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Creato il: Mag 16, 2022 alle 20:23
--- Versione del server: 10.3.34-MariaDB-0+deb10u1
--- Versione PHP: 8.0.1
+-- Creato il: Set 30, 2022 alle 04:03
+-- Versione del server: 10.5.15-MariaDB-0+deb11u1-log
+-- Versione PHP: 7.4.30
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -89,7 +89,10 @@ CREATE TABLE `groups` (
   `spoiler_block` tinyint(1) NOT NULL DEFAULT 0,
   `set_no_vocal` tinyint(1) NOT NULL DEFAULT 0,
   `set_antiflood` tinyint(1) NOT NULL DEFAULT 1,
-  `ban_message` text NOT NULL DEFAULT '{mention} has been <b>banned</b> from: {chat}'
+  `ban_message` text NOT NULL DEFAULT '{mention} has been <b>banned</b> from: {chat}',
+  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `updated_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `set_gh` tinyint(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -132,6 +135,17 @@ CREATE TABLE `group_users` (
 -- --------------------------------------------------------
 
 --
+-- Struttura della tabella `nebula_antispam`
+--
+
+CREATE TABLE `nebula_antispam` (
+  `id` int(11) NOT NULL,
+  `logic` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
 -- Struttura della tabella `nebula_dashboard`
 --
 
@@ -141,8 +155,24 @@ CREATE TABLE `nebula_dashboard` (
   `tg_username` varchar(255) NOT NULL,
   `tg_group_id` varchar(255) NOT NULL,
   `enable` tinyint(1) NOT NULL DEFAULT 1,
+  `role` varchar(255) NOT NULL,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   `updated_at` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Struttura della tabella `nebula_dashboard_content`
+--
+
+CREATE TABLE `nebula_dashboard_content` (
+  `article_id` int(11) NOT NULL,
+  `title` varchar(50) NOT NULL,
+  `language` varchar(50) NOT NULL,
+  `content` text NOT NULL,
+  `created_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `updated_at` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -157,6 +187,18 @@ CREATE TABLE `nebula_type_no_username_cat` (
   `type_no_username_desc` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dump dei dati per la tabella `nebula_type_no_username_cat`
+--
+
+INSERT INTO `nebula_type_no_username_cat` (`id`, `type_no_username_id`, `type_no_username_desc`) VALUES
+(1, 1, 'Kick'),
+(2, 2, 'Warning to the user'),
+(3, 3, 'Mute User'),
+(4, 4, 'Ban User'),
+(5, 5, 'Silent Kick'),
+(6, 6, 'No action towards the user');
+
 -- --------------------------------------------------------
 
 --
@@ -166,6 +208,7 @@ CREATE TABLE `nebula_type_no_username_cat` (
 CREATE TABLE `nebula_updates` (
   `id` int(11) NOT NULL,
   `update_id` varchar(255) NOT NULL,
+  `message_id` varchar(255) NOT NULL,
   `tg_group_id` varchar(255) NOT NULL,
   `tg_user_id` varchar(255) NOT NULL,
   `date` datetime(6) NOT NULL
@@ -285,11 +328,24 @@ ALTER TABLE `group_users`
   ADD UNIQUE KEY `key_user_group` (`tg_id`,`tg_group_id`);
 
 --
+-- Indici per le tabelle `nebula_antispam`
+--
+ALTER TABLE `nebula_antispam`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `spam_index` (`logic`);
+
+--
 -- Indici per le tabelle `nebula_dashboard`
 --
 ALTER TABLE `nebula_dashboard`
   ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `tg_group_id_index` (`tg_group_id`);
+  ADD UNIQUE KEY `double_index` (`tg_id`,`tg_group_id`);
+
+--
+-- Indici per le tabelle `nebula_dashboard_content`
+--
+ALTER TABLE `nebula_dashboard_content`
+  ADD PRIMARY KEY (`article_id`);
 
 --
 -- Indici per le tabelle `nebula_type_no_username_cat`
@@ -381,16 +437,28 @@ ALTER TABLE `group_users`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT per la tabella `nebula_antispam`
+--
+ALTER TABLE `nebula_antispam`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT per la tabella `nebula_dashboard`
 --
 ALTER TABLE `nebula_dashboard`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT per la tabella `nebula_dashboard_content`
+--
+ALTER TABLE `nebula_dashboard_content`
+  MODIFY `article_id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT per la tabella `nebula_type_no_username_cat`
 --
 ALTER TABLE `nebula_type_no_username_cat`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT per la tabella `nebula_updates`
