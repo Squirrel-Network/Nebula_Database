@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Creato il: Set 30, 2022 alle 04:03
--- Versione del server: 10.5.15-MariaDB-0+deb11u1-log
--- Versione PHP: 7.4.30
+-- Creato il: Mag 04, 2023 alle 11:11
+-- Versione del server: 10.5.19-MariaDB-0+deb11u2-log
+-- Versione PHP: 7.4.33
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -34,7 +34,7 @@ CREATE TABLE `community` (
   `tg_group_link` varchar(50) DEFAULT NULL,
   `language` varchar(50) NOT NULL DEFAULT 'IT',
   `type` varchar(50) NOT NULL DEFAULT 'supergroup'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -47,7 +47,7 @@ CREATE TABLE `custom_handler` (
   `chat_id` varchar(255) NOT NULL,
   `question` varchar(255) NOT NULL,
   `answer` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -93,7 +93,7 @@ CREATE TABLE `groups` (
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   `updated_at` datetime NOT NULL DEFAULT current_timestamp(),
   `set_gh` tinyint(1) NOT NULL DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -105,7 +105,7 @@ CREATE TABLE `groups_badwords` (
   `id` int(11) NOT NULL,
   `word` varchar(255) NOT NULL,
   `tg_group_id` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -116,7 +116,7 @@ CREATE TABLE `groups_badwords` (
 CREATE TABLE `groups_blacklist` (
   `id` int(11) NOT NULL,
   `tg_id_group` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -130,7 +130,7 @@ CREATE TABLE `group_users` (
   `tg_group_id` varchar(50) DEFAULT NULL,
   `warn_count` int(11) NOT NULL DEFAULT 0,
   `user_score` bigint(20) NOT NULL DEFAULT 0
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -141,7 +141,7 @@ CREATE TABLE `group_users` (
 CREATE TABLE `nebula_antispam` (
   `id` int(11) NOT NULL,
   `logic` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -158,7 +158,7 @@ CREATE TABLE `nebula_dashboard` (
   `role` varchar(255) NOT NULL,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
   `updated_at` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -168,12 +168,29 @@ CREATE TABLE `nebula_dashboard` (
 
 CREATE TABLE `nebula_dashboard_content` (
   `article_id` int(11) NOT NULL,
+  `article_title` varchar(255) NOT NULL,
   `title` varchar(50) NOT NULL,
   `language` varchar(50) NOT NULL,
   `content` text NOT NULL,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `updated_at` datetime NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `updated_at` datetime NOT NULL DEFAULT current_timestamp(),
+  `author` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Struttura della tabella `nebula_dashboard_staff`
+--
+
+CREATE TABLE `nebula_dashboard_staff` (
+  `id` int(11) NOT NULL,
+  `name` varchar(50) NOT NULL,
+  `description` varchar(1000) NOT NULL,
+  `contact` varchar(50) NOT NULL,
+  `git` varchar(50) NOT NULL,
+  `photo` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -185,19 +202,7 @@ CREATE TABLE `nebula_type_no_username_cat` (
   `id` int(11) NOT NULL,
   `type_no_username_id` int(11) NOT NULL,
   `type_no_username_desc` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
---
--- Dump dei dati per la tabella `nebula_type_no_username_cat`
---
-
-INSERT INTO `nebula_type_no_username_cat` (`id`, `type_no_username_id`, `type_no_username_desc`) VALUES
-(1, 1, 'Kick'),
-(2, 2, 'Warning to the user'),
-(3, 3, 'Mute User'),
-(4, 4, 'Ban User'),
-(5, 5, 'Silent Kick'),
-(6, 6, 'No action towards the user');
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -212,7 +217,7 @@ CREATE TABLE `nebula_updates` (
   `tg_group_id` varchar(255) NOT NULL,
   `tg_user_id` varchar(255) NOT NULL,
   `date` datetime(6) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -224,7 +229,7 @@ CREATE TABLE `owner_list` (
   `id` int(11) NOT NULL,
   `tg_id` varchar(255) NOT NULL,
   `tg_username` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -241,7 +246,7 @@ CREATE TABLE `superban_table` (
   `id_operator` varchar(50) NOT NULL,
   `username_operator` varchar(50) NOT NULL,
   `first_name_operator` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -255,7 +260,7 @@ CREATE TABLE `users` (
   `tg_username` varchar(50) NOT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -267,7 +272,7 @@ CREATE TABLE `whitelist_channel` (
   `id` int(11) NOT NULL,
   `tg_channel_id` varchar(255) NOT NULL,
   `tg_group_id` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -279,7 +284,7 @@ CREATE TABLE `whitelist_table` (
   `id` int(11) NOT NULL,
   `tg_id` varchar(50) NOT NULL,
   `tg_username` varchar(50) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Indici per le tabelle scaricate
@@ -346,6 +351,12 @@ ALTER TABLE `nebula_dashboard`
 --
 ALTER TABLE `nebula_dashboard_content`
   ADD PRIMARY KEY (`article_id`);
+
+--
+-- Indici per le tabelle `nebula_dashboard_staff`
+--
+ALTER TABLE `nebula_dashboard_staff`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indici per le tabelle `nebula_type_no_username_cat`
@@ -455,10 +466,16 @@ ALTER TABLE `nebula_dashboard_content`
   MODIFY `article_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT per la tabella `nebula_dashboard_staff`
+--
+ALTER TABLE `nebula_dashboard_staff`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT per la tabella `nebula_type_no_username_cat`
 --
 ALTER TABLE `nebula_type_no_username_cat`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT per la tabella `nebula_updates`
